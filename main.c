@@ -62,7 +62,7 @@ int main() {
     system("echo 100000 > /sys/fs/cgroup/cpu/demo/cpu.cfs_period_us");
 
     pid_t child_pid = clone(child_fn, child_stack + 1048576, CLONE_NEWPID | CLONE_NEWNET | CLONE_NEWNS | SIGCHLD, NULL);
-    printf("Child's pid from opinion of parent is %ld\n", (long) child_pid);
+    printf("Child's pid from opinion of parent is %ld\n\n", (long) child_pid);
     char child_pid_str[100];
     snprintf(child_pid_str, 100, "%ld", (long) child_pid);
 
