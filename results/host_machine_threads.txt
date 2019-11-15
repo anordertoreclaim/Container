@@ -1,0 +1,25 @@
+sysbench 0.4.12:  multi-threaded system evaluation benchmark
+
+Running the test with following options:
+Number of threads: 64
+
+Doing thread subsystem performance test
+Thread yields per test: 1000 Locks used: 8
+Threads started!
+Done.
+
+
+Test execution summary:
+    total time:                          8.2526s
+    total number of events:              10000
+    total time taken by event execution: 526.7083
+    per-request statistics:
+         min:                                  0.44ms
+         avg:                                 52.67ms
+         max:                                330.78ms
+         approx.  95 percentile:             144.13ms
+
+Threads fairness:
+    events (avg/stddev):           156.2500/10.34
+    execution time (avg/stddev):   8.2298/0.01
+
