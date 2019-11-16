@@ -12,7 +12,7 @@ static char child_stack[1048576];
 static int child_fn(void *arg) {
     // sleep 2 seconds so that prints do not get messed up
     sleep(2);
-    printf("Clone internal pid %ld\n", (long) getpid());
+    printf("Clone internal pid: %ld\n", (long) getpid());
     pid_t child_pid = fork();
 
     if (child_pid) {
@@ -41,8 +41,9 @@ static int child_fn(void *arg) {
         system("touch /mnt/example_file");
         printf("Contents of directory /mnt:\n");
         system("ls /mnt"); 
-        printf("\n\n");
-
+        printf("\n");
+        
+        sleep(2);
         system("bash");
  
         // Unmount loop device 
@@ -82,6 +83,10 @@ int main() {
     // Add process to cgroup
     system(cgroup_command);
     
+    sleep(5);
+    printf("\nContents of /mnt directory from a point of view of host:\n");
+    system("ls /mnt");
+ 
     waitpid(child_pid, NULL, 0);
     // Remove cgroup 
     system("rmdir /sys/fs/cgroup/cpu/demo");
