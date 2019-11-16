@@ -84,8 +84,13 @@ int main() {
     system(cgroup_command);
     
     sleep(5);
-    printf("\nContents of /mnt directory from a point of view of host:\n");
-    system("ls /mnt");
+    printf("\nCheck if a file /mnt/example_file exists from parent's point of view:\n");
+    if (access("/mnt/example_file", F_OK) != -1) {
+        printf("It exists");
+    } else {
+        printf("It does not exist");
+    }
+    printf("\n");
  
     waitpid(child_pid, NULL, 0);
     // Remove cgroup 
