@@ -18,7 +18,7 @@ static int child_fn(void *arg) {
     if (child_pid) {
         printf("Clone fork child pid: %ld\n\n", (long) child_pid);
         // Mount namespace
-        system("mount --make-rprivate -o remount /");
+        system("mount -o remount / --make-private");
         system("mount -t proc proc /proc --make-private");
         printf("Child's pstree:\n");
         system("pstree");
@@ -33,9 +33,9 @@ static int child_fn(void *arg) {
         // Create loop device and mount it
         system("dd if=/dev/zero of=/fs bs=1k count=100"); 
         system("losetup /dev/loop1 /fs");
-        system("mkfs /dev/loop1 100");
+        system("mkfs.ext2 /dev/loop1 100");
         printf("Mount loop device at directory /mnt.\n");
-        system("mount /dev/loop1 /mnt --make-private");
+        system("mount -t ext2 /dev/loop1 /mnt --make-private");
     
         printf("Create an exmaple_file at /mnt directory.\n\n");
         system("touch /mnt/example_file");
@@ -47,7 +47,7 @@ static int child_fn(void *arg) {
         system("bash");
  
         // Unmount loop device 
-        system("umount /dev/loop1");
+        system("umount -t ext2 /dev/loop1");
         system("losetup -d /dev/loop1");
         system("umount /proc");
     }
