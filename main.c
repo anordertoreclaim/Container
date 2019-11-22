@@ -18,7 +18,7 @@ static int child_fn(void *arg) {
     if (child_pid) {
         printf("Clone fork child pid: %ld\n\n", (long) child_pid);
         // Mount namespace
-        //system("mount -o remount / --make-private");
+        system("mount -o remount / --make-private");
         system("mount -t proc proc /proc --make-private");
         printf("Child's pstree:\n");
         system("pstree");
