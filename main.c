@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <syscall.h>
 
-static char child_stack[1048576];
+static char child_stack[100 * 1048576];
 
 static int child_fn(void *arg) {
     // sleep 2 seconds so that prints do not get messed up
@@ -18,7 +18,7 @@ static int child_fn(void *arg) {
     if (child_pid) {
         printf("Clone fork child pid: %ld\n\n", (long) child_pid);
         // Mount namespace
-        system("mount -o remount / --make-private");
+        //system("mount -o remount / --make-private");
         system("mount -t proc proc /proc --make-private");
         printf("Child's pstree:\n");
         system("pstree");
@@ -59,7 +59,7 @@ int main() {
     // Create directory for cgroup and prepare it for restriction of cpu usage
     system("sudo mkdir /sys/fs/cgroup/cpu/demo");
     // I do not reduce the performance here, since I need to benchmark my container
-    system("echo 100000 > /sys/fs/cgroup/cpu/demo/cpu.cfs_quota_us");
+    system("echo 50000 > /sys/fs/cgroup/cpu/demo/cpu.cfs_quota_us");
     system("echo 100000 > /sys/fs/cgroup/cpu/demo/cpu.cfs_period_us");
 
     pid_t child_pid = clone(child_fn, child_stack + 1048576, CLONE_NEWPID | CLONE_NEWNET | CLONE_NEWNS | SIGCHLD, NULL);
@@ -81,7 +81,8 @@ int main() {
     strcat(cgroup_command, child_pid_str);
     strcat(cgroup_command, " > /sys/fs/cgroup/cpu/demo/tasks");
     // Add process to cgroup
-    system(cgroup_command);
+    // Uncomment to turn on cgroup
+    //system(cgroup_command);
     
     sleep(5);
     printf("\nCheck if a file /mnt/example_file exists from parent's point of view:\n");
